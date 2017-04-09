@@ -1,0 +1,116 @@
+dnl Copyright (C) 2002 Ben Goodwin
+dnl This file is part of the nss-mysql library.
+dnl
+dnl The nss-mysql library is free software; you can redistribute it and/or
+dnl modify it under the terms of the GNU General Public License as published
+dnl by the Free Software Foundation; either version 2 of the License, or
+dnl (at your option) any later version.
+dnl
+dnl The nss-mysql library is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl GNU General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU General Public License
+dnl along with the nss-mysql library; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+dnl
+dnl $Id$ */
+
+dnl Autoconf 2.53 is REQUIRED
+
+AC_REVISION($Revision$)dnl
+AC_INIT([libnss-mysql], [1.5])
+AC_CONFIG_AUX_DIR(out)
+AC_PREREQ(2.53)
+AC_CONFIG_SRCDIR([src/nss_main.c])
+AC_CANONICAL_TARGET([])
+AC_PREFIX_DEFAULT()
+AM_INIT_AUTOMAKE
+AM_CONFIG_HEADER(config.h)
+AM_MAINTAINER_MODE
+
+AC_PROG_CC
+
+AC_DISABLE_STATIC
+AC_PROG_LIBTOOL
+
+AC_ARG_WITH(mysql,
+            [  --with-mysql=DIR        Location of your MySQL installation])
+AC_ARG_ENABLE(debug,
+            [  --enable-debug          Enable debug (see DEBUGGING)],
+            [AC_DEFINE([DEBUG], 1, [Enable debug])])
+
+case "$target_os" in
+linux*)
+    CPPFLAGS="$CPPFLAGS -D_REENTRANT"
+    LIBVER=2
+    OS=linux
+    RENAME=false
+    test "$prefix" = "NONE" && prefix=
+    ;;
+solaris*)
+    CPPFLAGS="$CPPFLAGS -D_REENTRANT"
+    LIBVER=1
+    OS=solaris
+    RENAME=true
+    test "$prefix" = "NONE" && prefix= && libdir=/usr/lib
+    ;;
+freebsd*)
+    CPPFLAGS="$CPPFLAGS -DPIC -D_REENTRANT"
+    LIBVER=1
+    OS=freebsd
+    RENAME=true
+    test "$prefix" = "NONE" && prefix= && libdir=/usr/lib
+    ;;
+*)  OS=unknown
+    ;;
+esac
+
+AM_CONDITIONAL(RENAME, test "$RENAME" = "true")
+
+AC_CACHE_CHECK([whether the linker accepts -znodelete],
+               [nss_mysql_cv_cc_znodelete], [
+    SAVELIBS=$LIBS
+    LIBS="-Wl,-znodelete $SAVELIBS"
+    AC_TRY_LINK([], [], nss_mysql_cv_cc_znodelete=yes,
+                        nss_mysql_cv_cc_znodelete=no)
+    LIBS=$SAVELIBS])
+if test $nss_mysql_cv_cc_znodelete = "yes"; then
+    LIBS="-Wl,-znodelete $SAVELIBS"
+fi
+
+AC_SUBST(LIBVER)
+AC_SUBST(OS)
+
+FIND_MYSQL()
+
+AC_CHECK_LIB(socket, getsockname)
+AC_CHECK_LIB(nsl, gethostbyname)
+AC_CHECK_LIB(m, floor)
+AC_CHECK_LIB(dl, dlsym)
+AC_CHECK_LIB(z, compress)
+
+AC_CHECK_LIB(mysqlclient, main, ,
+             [AC_MSG_ERROR([Unable find a functioning MySQL library])])
+
+AC_HEADER_STDC
+AC_CHECK_HEADER(mysql.h, , [AC_MSG_ERROR([Unable to find mysql.h])])
+AC_CHECK_HEADERS(syslog.h stdint.h nss.h nss_common.h shadow.h)
+
+AC_C_CONST
+AC_TYPE_UID_T
+AC_TYPE_SIZE_T
+AC_CHECK_TYPES([socklen_t], , , [
+#include <unistd.h>
+#include <sys/socket.h>
+])
+
+EXPANDED_SYSCONFDIR=`eval echo $sysconfdir`
+AC_DEFINE_UNQUOTED([MAINCFG], "$EXPANDED_SYSCONFDIR/libnss-mysql.cfg",
+                   [Main config file])
+AC_DEFINE_UNQUOTED([ROOTCFG],"$EXPANDED_SYSCONFDIR/libnss-mysql-root.cfg",
+                   [Root config file])
+
+AC_CONFIG_FILES([Makefile src/Makefile src/version.c])
+AC_OUTPUT
