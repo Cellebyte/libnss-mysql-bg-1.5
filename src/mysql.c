@@ -70,10 +70,11 @@ _nss_mysql_is_same_sockaddr (struct sockaddr orig, struct sockaddr cur)
   switch (((struct sockaddr_in *)&ci.sock_info.local)->sin_family)
     {
     case AF_INET:
-        if ((*(struct sockaddr_in *) &orig).sin_port != 
+    case AF_INET6:
+        if ((*(struct sockaddr_in *) &orig).sin_port !=
             (*(struct sockaddr_in *) &cur).sin_port)
           DBRETURN (nfalse)
-        if ((*(struct sockaddr_in *) &orig).sin_addr.s_addr != 
+        if ((*(struct sockaddr_in *) &orig).sin_addr.s_addr !=
             (*(struct sockaddr_in *) &cur).sin_addr.s_addr)
           DBRETURN (nfalse)
         break;
@@ -285,7 +286,7 @@ _nss_mysql_run_query (char *query, MYSQL_RES **mresult, int *attempts)
 
   retval = _nss_mysql_connect_sql (mresult);
   if (retval != NSS_SUCCESS)
-    DSRETURN (retval);
+    DSRETURN (NSS_UNAVAIL);
 
   retval = mysql_query (&ci.link, query);
   if (retval != RETURN_SUCCESS)
@@ -346,4 +347,3 @@ _nss_mysql_escape_string (char *to, const char *from, MYSQL_RES **mresult)
   mysql_real_escape_string (&ci.link, to, from, strlen(from));
   DSRETURN (NSS_SUCCESS)
 }
-

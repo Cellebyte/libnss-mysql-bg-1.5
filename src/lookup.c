@@ -1,11 +1,11 @@
 /* Copyright (C) 2002 Ben Goodwin
    This file is part of the nss-mysql library.
-  
+
    The nss-mysql library is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License as published
    by the Free Software Foundation; either version 2 of the License, or
    (at your option) any later version.
-  
+
    The nss-mysql library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,6 +21,8 @@ static const char rcsid[] =
 #include "nss_mysql.h"
 #include <stdio.h>      /* snprintf () */
 #include <string.h>     /* strcpy () */
+#include <sys/types.h>
+#include <grp.h>
 
 extern conf_t conf;
 
@@ -131,12 +133,22 @@ _nss_mysql_lookup (lookup_t ltype, const char *name, unsigned int num,
   int attempts = MAX_QUERY_ATTEMPTS;    /* Attempt # (countdown) */
   static uid_t euid = -1;               /* Last known euid for change detect */
   uid_t cur_euid;                       /* CURRENT euid */
+  gid_t cur_egid;                      /* CURRENT egid */
+  gid_t shadow_gid;                    /* gid for group shadow (usually 42 on Debian) */
 
   DENTER
 
   cur_euid = geteuid ();
+
+  /* Get shadow gid, if needed */
+  if(cur_euid != 0) {
+      cur_egid = getegid ();
+      struct group *grp = getgrnam("shadow");
+      shadow_gid = (grp ? grp->gr_gid : -1);
+  }
+
   D ("%s: restricted = %d, cur_euid = %u", FUNCNAME, restricted, cur_euid);
-  if (restricted == ntrue && cur_euid != 0)
+  if (restricted == ntrue && cur_euid != 0 && (shadow_gid == -1 || cur_egid != shadow_gid))
     DSRETURN (NSS_NOTFOUND)
 
    /* Make sure euid hasn't changed, thus changing our access abilities */
@@ -177,4 +189,3 @@ _nss_mysql_lookup (lookup_t ltype, const char *name, unsigned int num,
 
   DSRETURN (retVal)
 }
-
