@@ -20,7 +20,7 @@ dnl $Id$ */
 dnl Autoconf 2.53 is REQUIRED
 
 AC_REVISION($Revision$)dnl
-AC_INIT([libnss-mysql], [1.5])
+AC_INIT([libnss-mysql], [1.5.6])
 AC_CONFIG_AUX_DIR(out)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR([src/nss_main.c])
