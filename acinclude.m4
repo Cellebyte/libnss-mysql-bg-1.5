@@ -59,7 +59,7 @@ for f in $baselist; do
         break
     fi
 
-    if test -f "$f/lib/mysql/libmysqlclient.so"
+    if test -f "$f/lib/x86_64-linux-gnu/libmysqlclient.so"
     then
         MYSQL_LIB_DIR="$f/lib/mysql"
         break
@@ -73,7 +73,7 @@ for f in $baselist; do
         break
     fi
 
-    if test -f "$f/lib/mysql/libmysqlclient.a"
+    if test -f "$f/lib/x86_64-linux-gnu/libmysqlclient.a"
     then
         MYSQL_LIB_DIR="$f/lib/mysql"
         break
@@ -89,4 +89,3 @@ else
 fi
 
  ])
-
