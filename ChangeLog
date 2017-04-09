@@ -102,7 +102,7 @@
     * CHANGE: Solaris makes use of two new columns in the getpw* routines
               See the file UPGRADING for details
 
-    * CHANGE: Installation of libraries is handled better; as a result, a 
+    * CHANGE: Installation of libraries is handled better; as a result, a
               'make uninstall' will remove libnss-mysql (except config files)
 
     * CHANGE: -Bgroup and --allow-shlib-undefined linker options are no longer
@@ -238,7 +238,7 @@
     * NEW:    Additional documentation on producing 64-bit version
 
     * BUGFIX: Handle program forks properly - used to cause hangs,
-              improper data, crashes, etc ... 
+              improper data, crashes, etc ...
 
     * BUGFIX: getgrmem() would hang in multi-threaded environment
 
@@ -306,7 +306,7 @@
       You may, however, need to manually link the library.  If you
       encounter an error with an undefined symbol, read the FAQ.
 
-    * Fixed a couple of bus error conditions under Solaris/sparc. 
+    * Fixed a couple of bus error conditions under Solaris/sparc.
 
     * Fixed memory leak under Solaris.
 
@@ -348,7 +348,7 @@
       nss_mysql.h, nss_support.h: Renamed memory functions to avoid
       clashes.
 
-    * lookup.c: Fixed memory leak 
+    * lookup.c: Fixed memory leak
 
     * lookup.h: Added CLOSE_RESULT in GET on the HAVE_NSS_COMMON_H side
       of the house (to match the HAVE_NSS_H side)
@@ -577,4 +577,3 @@
     * nss_config.c: Added license and rcsid string
 
     * *: Initial import of nss-mysql
-
