@@ -1,6 +1,9 @@
 image: mysql:latest
 
 before_script:
+    - mkdir libnss-mysql-bg-1.5
+    - rsync -Paz --exclude-from 'rsync-exclude.txt' * libnss-mysql-bg-1.5/
+    - cd ..
     - apt-get update -qq &&
         apt-get install -y -qq debhelper libmysqlclient-dev quilt
                                 autotools-dev dh-autoreconf fakeroot
