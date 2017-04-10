@@ -4,18 +4,12 @@ before_script:
     - apt-get update -qq &&
         apt-get install -y -qq debhelper libmysqlclient-dev quilt
                                 autotools-dev dh-autoreconf fakeroot
-Clean_Configure:
+BUILD_libnss-mysql-bg-1.5.deb:
     script:
         - debian/rules clean
-Build:
-    script:
         - debian/rules build
-    artifacts:
-        paths:
-            - libnss-mysql-bg-1.5.tar.gz
-libnss-mysql-bg.deb:
-    script:
         - fakeroot debian/rules binary
     artifacts:
         paths:
+            - libnss-mysql-bg-1.5.tar.gz
             - ../libnss-mysql-bg_1.5-4_amd64.deb
