@@ -9,6 +9,7 @@ BUILD_libnss-mysql-bg-1.5.deb:
         - debian/rules clean
         - debian/rules build
         - fakeroot debian/rules binary
+        - ls -la
     artifacts:
         paths:
             - libnss-mysql-bg-1.5.tar.gz
