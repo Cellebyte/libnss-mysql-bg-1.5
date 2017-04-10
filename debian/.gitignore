@@ -3,3 +3,5 @@ libnss-mysql-bg
 autoreconf.*
 debhelper-build-stamp
 *.log
+files
+libnss-mysql-bg.substvars
