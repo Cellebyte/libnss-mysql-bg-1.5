@@ -1,7 +1,7 @@
 Source: libnss-mysql-bg
 Section: admin
 Priority: optional
-Maintainer: Froxlor Release Team <release@froxlor.org>
+Maintainer: Marcel Fest <support@selfnet.de>
 Build-Depends: debhelper (>= 9), libmysqlclient-dev, quilt (>= 0.40), autotools-dev, dh-autoreconf
 Standards-Version: 3.9.3
 

@@ -1,4 +1,6 @@
 # $Id$
+April 10, 2017
+    libnss-mysql 1.5-4 released
 
 September 3, 2005
     libnss-mysql 1.5 released
@@ -44,5 +46,3 @@ August 22, 2002
 
 August 14, 2002
     libnss-mysql 0.2 released
-
-

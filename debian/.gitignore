@@ -1,2 +1,5 @@
 .debhelper
 libnss-mysql-bg
+autoreconf.*
+debhelper-build-stamp
+*.log
