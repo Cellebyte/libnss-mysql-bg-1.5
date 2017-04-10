@@ -2,7 +2,7 @@ image: mysql:latest
 
 before_script:
     - apt-get update -qq &&\
-        apt-get install -y -qq debhelper libmysqlclient-dev quilt\
+        apt-get install -y -qq debhelper libmysqlclient-dev quilt
                                 autotools-dev dh-autoreconf fakeroot
 Clean_Configure:
     script:
