@@ -7,7 +7,7 @@ services:
 
 before_install:
     - docker pull mysql:latest
-    - docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+    - docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
     - docker exec -it some-mysql bash
 
 install:
@@ -25,4 +25,3 @@ script:
     - debian/rules clean
     - debian/rules build
     - fakeroot debian/rules binary
-    
