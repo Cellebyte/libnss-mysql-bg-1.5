@@ -1,20 +1,31 @@
-image: mysql:latest
+sudo: required
 
-before_script:
+language: c
+
+services:
+    - docker
+
+before_install:
+    - docker pull mysql:latest
+    - docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+    - docker exec -it some-mysql bash
+
+install:
     - apt-get update -qq &&
       apt-get install -y -qq debhelper libmysqlclient-dev quilt
                              autotools-dev dh-autoreconf fakeroot
                              rsync
+
+before_script:
     - mkdir libnss-mysql-bg-1.5
     - rsync -Paz --exclude-from 'rsync-exclude.txt' * libnss-mysql-bg-1.5/
     - cd libnss-mysql-bg-1.5
 
-BUILD_libnss-mysql-bg-1.5.deb:
-    script:
-        - debian/rules clean
-        - debian/rules build
-        - fakeroot debian/rules binary
-
+script:
+    - debian/rules clean
+    - debian/rules build
+    - fakeroot debian/rules binary
+    
     artifacts:
         paths:
             - libnss-mysql-bg_1.5-4_amd64.deb

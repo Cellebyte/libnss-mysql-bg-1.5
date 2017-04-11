@@ -6,9 +6,6 @@ libnss-mysql-bg (1.5-4) stable; urgency=high
 
  -- Selfnet e.V. <support@selfnet.de>  Tue, 10 Apr 2017 23:08:37 +0200
 
-
-
-
 libnss-mysql-bg (1.5-3+frx1) stable; urgency=medium
 
   * merge from sid
