@@ -1,8 +1,8 @@
 language: c
 
 install:
-    - apt-get update -qq &&
-      apt-get install -y -qq debhelper libmysqlclient-dev quilt
+    - sudo apt-get update -qq
+    - sudo apt-get install -y -qq debhelper libmysqlclient-dev quilt
                              autotools-dev dh-autoreconf fakeroot
                              rsync
 
