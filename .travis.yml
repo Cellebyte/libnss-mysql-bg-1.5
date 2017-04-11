@@ -26,6 +26,3 @@ script:
     - debian/rules build
     - fakeroot debian/rules binary
     
-    artifacts:
-        paths:
-            - libnss-mysql-bg_1.5-4_amd64.deb
