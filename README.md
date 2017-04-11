@@ -1,4 +1,5 @@
 Official website: http://libnss-mysql.sourceforge.net/
+Buildstatus: [![Build Status](https://travis-ci.org/Cellebyte/libnss-mysql-bg-1.5.svg?branch=master)](https://travis-ci.org/Cellebyte/libnss-mysql-bg-1.5)
 
 MySQL for NSS systems
 =====================
